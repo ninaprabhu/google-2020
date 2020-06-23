@@ -7,7 +7,7 @@
     <script src="script.js"></script>
   </head>
   <body>
-    <div id = "professional"> 
+    <div id="professional"> 
       <p>You can see my full work and background on my <a href="https://github.com/ninaprabhu">Github</a> and my <a href="https://www.linkedin.com/in/nina-prabhu">LinkedIn</a>.</p>
       <p>Below are some my favorite projects that I've worked on.</p>
       <h2>Past Projects</h2>
@@ -36,9 +36,11 @@
         </li>           
       </ul>
       <p>Languages: Python, C++, C, SAS, HTML/CSS </p>
-      <button onclick="showPic(this)">Click for a surprise!</button>
+      <button id="show" onclick="showPic()">Click for a surprise!</button>
       <br/>
-      <img id="mochi" src="/images/mochi.jpeg" style="visibility:hidden" width=300/>
-      <p id="mochi"> This is my dog, Mochi! </p>
+      <figure id="mochi">
+        <img src="/images/mochi.jpeg" width=300/>
+        <figcaption>This is my dog, Mochi!</figcaption>
+      </figure>
     </div>
   </body>

@@ -12,8 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Shows picture of dog */
-function showPic(button){
-    document.getElementById('mochi').style.visibility='visible';
-    button.style.visibility="hidden";
+/* Switch to another page */
+function changePage(url){
+    window.location = url;
+}
+
+/* Show picture of dog */
+function showPic(){
+    document.getElementById('show').style.display = "none";
+    document.getElementById('mochi').style.display = "block";    
 }
