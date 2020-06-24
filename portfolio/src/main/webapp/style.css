@@ -10,6 +10,16 @@
     width: 650px;
 }
 
-#mochi {
-    display: none;
+#surprise {
+    text-align: center;
+}
+
+.mochi {
+    width: 300px;
+    display: block;
+    margin: auto;
+}
+
+.hidden {
+    display:none;
 }

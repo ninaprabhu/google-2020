@@ -19,6 +19,6 @@ function changePage(url){
 
 /* Show picture of dog */
 function showPic(){
-    document.getElementById('show').style.display = "none";
-    document.getElementById('mochi').style.display = "block";    
+    document.getElementById('show').classList.add("hidden");
+    document.getElementById('pic').classList.remove("hidden");
 }
