@@ -14,6 +14,6 @@
 
 /* Show picture of dog */
 function showPic(){
-    document.getElementById('show').classList.add("hidden");
-    document.getElementById('pic').classList.remove("hidden");
+    document.getElementById("show").classList.add("hidden");
+    document.getElementById("pic").classList.remove("hidden");
 }
