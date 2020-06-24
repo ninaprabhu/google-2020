@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Switch to another page */
-function changePage(url){
-    window.location = url;
-}
-
 /* Show picture of dog */
 function showPic(){
     document.getElementById('show').classList.add("hidden");
