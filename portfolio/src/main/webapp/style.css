@@ -5,15 +5,25 @@ h1, h2, h3{
 }
 
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
 }
 
 #professional {
     margin-left: auto;
     margin-right: auto;
-    width: 650px;
+    max-width: 700px;
+}
+
+#mypic img{ 
+    display: block;
+    margin: auto;
+    width: 300px; 
+}
+
+#mypic figcaption {
+    text-align: center;
 }
 
 #surprise {
@@ -23,7 +33,7 @@ h1, h2, h3{
 .mochi {
     display: block;
     margin: auto;
-    width: 200px;
+    max-width: 240px;
 }
 
 .hidden {
@@ -99,4 +109,8 @@ h1, h2, h3{
 
 .tabs button:hover {
     background-color: #ddd;
+}
+
+.tabs .current {
+    background-color: rgb(189, 238, 116);
 }

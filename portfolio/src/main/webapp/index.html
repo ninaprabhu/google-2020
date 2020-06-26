@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="tabs">
-      <button class="tab" style="background-color: #ccc">About me!</button>
+      <button class="current tab">About me!</button>
       <button class="tab" onclick="changePage('projects.html')">Projects</button>
       <button class="tab" onclick="changePage('pictures.html')">Pictures</button>
     </div>
@@ -18,8 +18,8 @@
           I'm originally from North Carolina, where I live with my parents, sister, and dog. 
           In my free time, I enjoy doing puzzles, reading, and watching Netflix, particularly 
           funny shows like How I Met Your Mother.</p>
-      <figure>
-        <img src="/images/me.jpeg" width=300/>
+      <figure id="mypic">
+        <img src="/images/me.jpeg"/>
         <figcaption>Here's me!</figcaption>
       </figure>
     </div>
