@@ -1,15 +1,29 @@
 @import url("https://fonts.googleapis.com/css?family=Amatic+SC");
 
+h1, h2, h3{
+    text-align: center;
+}
+
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
 }
 
 #professional {
     margin-left: auto;
     margin-right: auto;
-    width: 650px;
+    max-width: 700px;
+}
+
+#mypic img{ 
+    display: block;
+    margin: auto;
+    width: 300px; 
+}
+
+#mypic figcaption {
+    text-align: center;
 }
 
 #surprise {
@@ -19,7 +33,7 @@
 .mochi {
     display: block;
     margin: auto;
-    width: 200px;
+    max-width: 240px;
 }
 
 .hidden {
@@ -27,9 +41,9 @@
 }
 
 #wholegrid{
-    height: 90vmax;
+    height: 80vmax;
     margin: 3% auto;
-    width: 90vmin;
+    width: 80vmin;
 }
 
 .row {
@@ -70,7 +84,6 @@
 .image:hover ~ .top{
     opacity: 1;
     z-index: 4;
-
 }
 
 .image:hover{
@@ -80,6 +93,24 @@
     z-index: 3;
 }
 
+.tabs {
+    background-color: #f1f1f1;
+    overflow: hidden;
+}
 
+.tabs button {
+    background-color: inherit;
+    border: none;
+    float: left;
+    font-size: 17px;
+    outline: none;
+    padding: 14px 16px;
+}
 
+.tabs button:hover {
+    background-color: #ddd;
+}
 
+.tabs .current {
+    background-color: rgb(189, 238, 116);
+}

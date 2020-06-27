@@ -17,3 +17,8 @@ function showPic(){
     document.getElementById("show").classList.add("hidden");
     document.getElementById("pic").classList.remove("hidden");
 }
+
+/* Switch to new page */
+function changePage(newPage){
+    location.href = newPage;
+}
