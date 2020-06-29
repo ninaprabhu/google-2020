@@ -7,20 +7,21 @@
     <script src="script.js"></script>
   </head>
   <body>
+    <div class="tabs">
+      <button class="current tab">About me!</button>
+      <button class="tab" onclick="changePage('projects.html')">Projects</button>
+      <button class="tab" onclick="changePage('pictures.html')">Pictures</button>
+    </div>
     <div id="content">
       <h1>About me!</h1>
       <p>Hi! I'm Nina. I'm a rising junior at Stanford University majoring in computer science. 
           I'm originally from North Carolina, where I live with my parents, sister, and dog. 
           In my free time, I enjoy doing puzzles, reading, and watching Netflix, particularly 
           funny shows like How I Met Your Mother.</p>
-      <figure>
-        <img src="/images/me.jpeg" width=300/>
+      <figure id="mypic">
+        <img src="/images/me.jpeg"/>
         <figcaption>Here's me!</figcaption>
       </figure>
-      <p>Click here to get learn more about my past projects:</p>
-      <a href="projects.html" type="button" target="_blank">Projects</a>
-      <p>Click here to see cool pics:</p>
-      <a href="pictures.html" type="button" target="_blank">Pictures</a>
     </div>
   </body>
 </html>

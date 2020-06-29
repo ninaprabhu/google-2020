@@ -7,38 +7,54 @@
     <script src="script.js"></script>
   </head>
   <body>
+    <div class="tabs">
+      <button class="tab" onclick="changePage('index.html')">About me!</button>
+      <button class="tab" onclick="changePage('projects.html')">Projects</button>
+      <button class="current tab">Pictures</button>
+    </div>
+    <h1>Photo Gallery</h1>
+    <h3>Here are some pictures from places I've been. Hover over the photos to see where they were taken!</h3>
     <div id="wholegrid">
       <div class="row">
         <div class="col">
           <img class="image" src="/images/philly.jpg">
+          <div class="image top">Philadelphia, PA</div>
         </div>
         <div class="col">
           <img class="image" src="/images/key_west.jpg">
+          <div class="image top">Key West, FL</div>
         </div>
         <div class="col">
           <img class="image" src="/images/santorini.JPG">
+          <div class="image top">Santorini, Greece</div>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <img class="image" src="/images/puerto_vallarta.JPG">
+          <div class="image top">Puerto Vallarta,<br>Mexico</div>
         </div>
         <div class="col">
           <img class="image" src="/images/cary.JPG">
+          <div class="image top">Cary, NC (home!)</div>
         </div>
         <div class="col">
           <img class="image" src="/images/denver.JPG">
+          <div class="image top">Denver, CO</div>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <img class="image" src="/images/stanford.jpg">
+          <div class="image top">Palo Alto, CA</div>
         </div>
         <div class="col">
           <img class="image" src="/images/bryce_canyon.jpg">
+          <div class="image top">Bryce Canyon, UT</div>
         </div>
         <div class="col">
           <img class="image" src="/images/tahoe.jpg">
+          <div class="image top">Tahoe, CA</div>
         </div>
       </div>
     </div>

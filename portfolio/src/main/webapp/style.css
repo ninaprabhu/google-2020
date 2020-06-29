@@ -1,13 +1,29 @@
+@import url("https://fonts.googleapis.com/css?family=Amatic+SC");
+
+h1, h2, h3{
+    text-align: center;
+}
+
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
 }
 
 #professional {
     margin-left: auto;
     margin-right: auto;
-    width: 650px;
+    max-width: 700px;
+}
+
+#mypic img{ 
+    display: block;
+    margin: auto;
+    width: 300px; 
+}
+
+#mypic figcaption {
+    text-align: center;
 }
 
 #surprise {
@@ -17,7 +33,7 @@
 .mochi {
     display: block;
     margin: auto;
-    width: 200px;
+    max-width: 240px;
 }
 
 .hidden {
@@ -25,25 +41,76 @@
 }
 
 #wholegrid{
-    height: 90vmax;
+    height: 80vmax;
     margin: 3% auto;
-    width: 90vmin;
+    width: 80vmin;
 }
 
 .row {
     display: flex;
+    flex: calc(100%/3);
+    margin-bottom: 0;
     padding: 0 4px; 
 }
 
 .col {
+    align-items: center;
+    color: white;
+    display: flex;
     flex: calc(100%/3);
-    padding: 0 4px;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    text-align: center;
 }
 
 .image {
+    position: relative;
+    transition: transform .2s;
     width: 100%;
+    z-index: 2;
 }
 
-.image:hover {
+.top {
+    font-family: "Amatic SC";
+    font-size: 40pt;
+    font-weight: 500;
+    pointer-events: none;
+    position: absolute;
+    opacity: 0;
+    z-index: -1; 
+}
+
+.image:hover ~ .top{
+    opacity: 1;
+    z-index: 4;
+}
+
+.image:hover{
+    display: flex;
+    filter: brightness(50%);
     transform: scale(1.5);
+    z-index: 3;
+}
+
+.tabs {
+    background-color: #f1f1f1;
+    overflow: hidden;
+}
+
+.tabs button {
+    background-color: inherit;
+    border: none;
+    float: left;
+    font-size: 17px;
+    outline: none;
+    padding: 14px 16px;
+}
+
+.tabs button:hover {
+    background-color: #ddd;
+}
+
+.tabs .current {
+    background-color: rgb(189, 238, 116);
 }
