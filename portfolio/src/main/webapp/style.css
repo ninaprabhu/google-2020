@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Amatic+SC");
 
-h1, h2, h3{
+h1, h2, h3 {
     text-align: center;
 }
 
@@ -16,7 +16,7 @@ h1, h2, h3{
     max-width: 700px;
 }
 
-#mypic img{ 
+#mypic img { 
     display: block;
     margin: auto;
     width: 300px; 
