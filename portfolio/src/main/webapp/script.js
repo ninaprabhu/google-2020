@@ -22,3 +22,10 @@ function showPic(){
 function changePage(newPage){
     location.href = newPage;
 }
+
+/* Show message */
+function getTextUsingArrowFunctions() {
+  fetch('/data').then(response => response.text()).then((quote) => {
+    document.getElementById('text-container').innerText = quote;
+  });
+}
