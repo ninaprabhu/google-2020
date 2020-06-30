@@ -29,3 +29,10 @@ function getTextUsingArrowFunctions() {
     document.getElementById('text-container').innerText = quote;
   });
 }
+
+/* Display comments */
+function getComments() {
+    fetch('/data').then(response => response.text()).then((message) => {
+        document.getElementById('text-container').innerText = message;
+    });
+}
