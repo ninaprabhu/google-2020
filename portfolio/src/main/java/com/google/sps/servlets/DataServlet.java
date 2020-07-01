@@ -43,10 +43,11 @@ public class DataServlet extends HttpServlet {
     boolean save = Boolean.parseBoolean(request.getParameter("save"));
     if (save){ //only store if we indicated
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        long timestamp = System.currentTimeMillis();
         for(String s:array) {
             Entity comment = new Entity("Comment");
             comment.setProperty("text", s);
-            comment.setProperty("timestamp", System.currentTimeMillis());
+            comment.setProperty("timestamp", timestamp);
             datastore.put(comment);
         }
     }
