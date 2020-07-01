@@ -22,29 +22,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
+import java.util.Arrays;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private List<String> messages;
+  private List<String> comments;
 
   @Override
   public void init() {
-    messages = new ArrayList<>();
-    messages.add(
-        "A ship in port is safe, but that is not what ships are for. "
-            + "Sail out to sea and do new things. - Grace Hopper");
-    messages.add("They told me computers could only do arithmetic. - Grace Hopper");
-    messages.add("A ship in port is safe, but that's not what ships are built for. - Grace Hopper");
+    comments = new ArrayList<>();
   }
 
-
+  /* Print running list of comments, save history */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = new Gson().toJson(messages);
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String text = request.getParameter("text-container");
+    String[] array = text.split("\\s*,\\s*"); //comment1, comment2
+    for(String s:array) {
+        comments.add(s);
+    }
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(comments);
   }
 }
