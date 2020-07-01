@@ -24,12 +24,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import java.util.Arrays;
 
-// import java.util.Arrays;
-// import javax.servlet.annotation.WebServlet;
-// import javax.servlet.http.HttpServlet;
-// import javax.servlet.http.HttpServletRequest;
-// import javax.servlet.http.HttpServletResponse;
-
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
