@@ -23,11 +23,11 @@
         <figcaption>Here's me!</figcaption>
       </figure>
     </div>
-    <div id="java">
-      <h1>Sample Text</h1>
-      <p>Click here to see some text:</p>
-      <button onclick="getComments()">Fetch comments!</button>
-      <div id="text-container"></div>
-    </div>
+    <form id="java" action="/data" method="POST">
+      <p>Enter your comments:</p>
+      <textarea name="text-container">Sample</textarea>
+      <br/><br/>
+      <input type="submit" />
+    </form>
   </body>
 </html>
