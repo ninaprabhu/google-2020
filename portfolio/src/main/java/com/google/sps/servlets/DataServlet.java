@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,22 +32,22 @@ import java.util.Arrays;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> comments;
-
-  @Override
-  public void init() {
-    comments = new ArrayList<>();
-  }
-
   /* Print running list of comments, save history */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-container");
-    String[] array = text.split("\\s*,\\s*");
-    for(String s:array) {
-        comments.add(s);
+    String[] array = text.split("\\s*,\\s*"); //comment1, comment2
+    boolean save = Boolean.parseBoolean(request.getParameter("save"));
+    if (!save){
+        return; //no datastore necessary if we don't check the save box
     }
-    response.setContentType("application/json;");
-    response.getWriter().println(comments);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    for(String s:array) {
+        Entity comment = new Entity("Comment");
+        comment.setProperty("text", s);
+        comment.setProperty("timestamp", System.currentTimeMillis());
+        datastore.put(comment);
+    }
+    long timestamp = System.currentTimeMillis();
   }
 }
