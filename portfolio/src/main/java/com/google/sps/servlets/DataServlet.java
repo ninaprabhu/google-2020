@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,16 +41,28 @@ public class DataServlet extends HttpServlet {
     String text = request.getParameter("text-container");
     String[] array = text.split("\\s*,\\s*"); //comment1, comment2
     boolean save = Boolean.parseBoolean(request.getParameter("save"));
-    if (!save){
-        return; //no datastore necessary if we don't check the save box
+    if (save){ //only store if we indicated
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        for(String s:array) {
+            Entity comment = new Entity("Comment");
+            comment.setProperty("text", s);
+            comment.setProperty("timestamp", System.currentTimeMillis());
+            datastore.put(comment);
+        }
     }
+    
+    //getting saved comments
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    for(String s:array) {
-        Entity comment = new Entity("Comment");
-        comment.setProperty("text", s);
-        comment.setProperty("timestamp", System.currentTimeMillis());
-        datastore.put(comment);
+    PreparedQuery results = datastore.prepare(query);
+
+    List<String> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("text"); //we only want the comment text
+      comments.add(comment);
     }
-    long timestamp = System.currentTimeMillis();
+
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(comments));
   }
 }
