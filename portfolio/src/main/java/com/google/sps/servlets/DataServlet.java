@@ -40,7 +40,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-container");
-    String[] array = text.split("\\s*,\\s*");
+    String[] array = text.split("\\s*,\\s*"); //comment1, comment2
     for(String s:array) {
         comments.add(s);
     }
