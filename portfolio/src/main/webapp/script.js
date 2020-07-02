@@ -23,16 +23,26 @@ function changePage(newPage){
     location.href = newPage;
 }
 
-/* Show message */
-function getTextUsingArrowFunctions() {
-  fetch('/data').then(response => response.text()).then((quote) => {
-    document.getElementById('text-container').innerText = quote;
-  });
-}
-
 /* Display comments */
 function getComments() {
-    fetch('/data').then(response => response.text()).then((message) => {
-        document.getElementById('text-container').innerText = message;
-    });
+    // fetch('/data').then(response => response.text()).then((message) => {
+    //   document.getElementById('show-comments').innerText = message;
+    document.getElementById('show-comments').innerHTML = "";
+    let num = document.getElementById("num-comments").value;
+    num = parseInt(num);
+    if (!isNaN(num)) {
+        fetch('/data').then(response => response.json()).then((comments) => {
+            const commentList = document.getElementById('show-comments');
+            for (let i=0; i<num; i++) {
+                commentList.appendChild(createListElement(comments[i]));
+            }
+        });
+    }
+}
+
+/* Creates an <li> element containing text (from subtraction-game). */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }

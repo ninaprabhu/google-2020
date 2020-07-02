@@ -30,46 +30,15 @@ import java.util.List;
 import com.google.gson.Gson;
 import java.util.Arrays;
 
-/** Servlet that returns some comments.*/
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
-
-  private final List<String> comments = new ArrayList<>();
-
+/** Servlet that deletes all comments.*/
+@WebServlet("/delete-data")
+public class DeleteDataServlet extends HttpServlet {
   @Override
-  /* Show comments. */
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    //Get saved comments.
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    
-    for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("text"); //we only want the comment text
-      comments.add(comment);
-    }
-
-    String json = new Gson().toJson(comments);
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
-
-  /* Store comments. */
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String text = request.getParameter("text-container");
-    String[] array = text.split("\\s*,\\s*"); //Comments formatted as "comment1, comment2."
-    boolean save = Boolean.parseBoolean(request.getParameter("save"));
-    if (save) { //Only store if we indicated.
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        long timestamp = System.currentTimeMillis();
-        for(String s:array) {
-            Entity comment = new Entity("Comment");
-            comment.setProperty("text", s);
-            comment.setProperty("timestamp", timestamp);
-            datastore.put(comment);
-        }
-    }
-    response.sendRedirect("/comments.html");
+    datastore.delete(Arrays.asList(results));
   }
 }
+

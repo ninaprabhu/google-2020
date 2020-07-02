@@ -11,6 +11,7 @@
       <button class="current tab">About me!</button>
       <button class="tab" onclick="changePage('projects.html')">Projects</button>
       <button class="tab" onclick="changePage('pictures.html')">Pictures</button>
+      <button class="tab" onclick="changePage('comments.html')">Comments</button>
     </div>
     <div id="content">
       <h1>About me!</h1>
@@ -23,13 +24,5 @@
         <figcaption>Here's me!</figcaption>
       </figure>
     </div>
-    <form id="java" action="/data" method="POST">
-      <p>Enter your comments (separate by commas):</p>
-      <textarea name="text-container">Sample</textarea>
-      <br/>
-      <input type="checkbox" name="save" value="true">Save comments
-      <br/>
-      <input type="submit"/>
-    </form>
   </body>
 </html>
