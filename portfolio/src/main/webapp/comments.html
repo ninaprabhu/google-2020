@@ -18,13 +18,14 @@
         <p>Enter your comments (separate by commas):</p>
         <textarea name="text-container">Sample</textarea>
         <br/>
-        <input type="checkbox" name="save" value="true">Save comments
+        <input type="checkbox" name="save" value="true" checked>Save comments
         <br/>
         <input type="submit"/>
       </form>
       <label for="quantity">How many comments do you want to see?</label>
       <input id="num-comments" type="number" name="num-comments" value="0">
       <button onclick="getComments()">See comments!</button>
+      <button onclick="deleteComments()">Delete comments!</button>
       <ul id="show-comments"></ul>
     </div>
   </body>

@@ -34,12 +34,11 @@ import java.util.Arrays;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private final List<String> comments = new ArrayList<>();
-
   @Override
   /* Show comments. */
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
     //Get saved comments.
+    List<String> comments = new ArrayList<>();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);

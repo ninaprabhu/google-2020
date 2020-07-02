@@ -25,8 +25,6 @@ function changePage(newPage){
 
 /* Display comments */
 function getComments() {
-    // fetch('/data').then(response => response.text()).then((message) => {
-    //   document.getElementById('show-comments').innerText = message;
     document.getElementById('show-comments').innerHTML = "";
     let num = document.getElementById("num-comments").value;
     num = parseInt(num);
@@ -38,6 +36,15 @@ function getComments() {
             }
         });
     }
+}
+
+/* Delete comments */
+function deleteComments() {
+    const request = new Request('/delete-data', {method: 'POST'});
+    fetch(request).then(fetch('/data').then(response => response.json()).then((comments) => {
+        const commentList = document.getElementById('show-comments');
+        commentList.innerHTML = comments;
+    }));
 }
 
 /* Creates an <li> element containing text (from subtraction-game). */

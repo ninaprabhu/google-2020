@@ -20,6 +20,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Key;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,12 +34,27 @@ import java.util.Arrays;
 /** Servlet that deletes all comments.*/
 @WebServlet("/delete-data")
 public class DeleteDataServlet extends HttpServlet {
+  
+  /* Clear comments. */
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+    response.setContentType("application/json;");
+    response.getWriter().println();
+  }
+
+  /* Delete comments. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    datastore.delete(Arrays.asList(results));
+    List<Key> toDelete = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      toDelete.add(entity.getKey());
+    }
+    datastore.delete(toDelete);
+    response.setContentType("application/json;");
+    response.getWriter().println();
   }
 }
 
