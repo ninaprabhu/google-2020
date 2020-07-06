@@ -44,7 +44,7 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     
     for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("text"); //we only want the comment text
+      String comment = (String) entity.getProperty("text"); // Comment text.
       comments.add(comment);
     }
 
@@ -57,9 +57,9 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-container");
-    String[] array = text.split("\\s*,\\s*"); //Comments formatted as "comment1, comment2."
+    String[] array = text.split("\\s*,\\s*"); // Comments formatted as "comment1, comment2."
     boolean save = Boolean.parseBoolean(request.getParameter("save"));
-    if (save) { //Only store if we indicated.
+    if (save) { // Only store if we indicated.
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         long timestamp = System.currentTimeMillis();
         for(String s:array) {
