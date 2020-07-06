@@ -20,6 +20,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Key;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,45 +31,30 @@ import java.util.List;
 import com.google.gson.Gson;
 import java.util.Arrays;
 
-/** Servlet that returns some comments.*/
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
-
+/** Servlet that deletes all comments.*/
+@WebServlet("/delete-data")
+public class DeleteDataServlet extends HttpServlet {
+  
+  /* Clear comments. */
   @Override
-  /* Show comments. */
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    //Get saved comments.
-    List<String> comments = new ArrayList<>();
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    
-    for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("text"); // Comment text.
-      comments.add(comment);
-    }
-
-    String json = new Gson().toJson(comments);
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println();
   }
 
-  /* Store comments. */
+  /* Delete comments. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String text = request.getParameter("text-container");
-    String[] array = text.split("\\s*,\\s*"); // Comments formatted as "comment1, comment2."
-    boolean save = Boolean.parseBoolean(request.getParameter("save"));
-    if (save) { // Only store if we indicated.
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        long timestamp = System.currentTimeMillis();
-        for(String s:array) {
-            Entity comment = new Entity("Comment");
-            comment.setProperty("text", s);
-            comment.setProperty("timestamp", timestamp);
-            datastore.put(comment);
-        }
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    List<Key> toDelete = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      toDelete.add(entity.getKey());
     }
-    response.sendRedirect("/comments.html");
+    datastore.delete(toDelete);
+    response.setContentType("application/json;");
+    response.getWriter().println();
   }
 }
+

@@ -11,8 +11,9 @@
       <button class="current tab">About me!</button>
       <button class="tab" onclick="changePage('projects.html')">Projects</button>
       <button class="tab" onclick="changePage('pictures.html')">Pictures</button>
+      <button class="tab" onclick="changePage('comments.html')">Comments</button>
     </div>
-    <div id="content">
+    <div id="content" class="margin">
       <h1>About me!</h1>
       <p>Hi! I'm Nina. I'm a rising junior at Stanford University majoring in computer science. 
           I'm originally from North Carolina, where I live with my parents, sister, and dog. 
@@ -23,13 +24,5 @@
         <figcaption>Here's me!</figcaption>
       </figure>
     </div>
-    <form id="java" action="/data" method="POST">
-      <p>Enter your comments (separate by commas):</p>
-      <textarea name="text-container">Sample</textarea>
-      <br/>
-      <input type="checkbox" name="save" value="true">Save comments
-      <br/>
-      <input type="submit"/>
-    </form>
   </body>
 </html>
