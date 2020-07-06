@@ -28,7 +28,7 @@ function getComments() {
     document.getElementById('show-comments').innerHTML = "";
     let num = document.getElementById("num-comments").value;
     num = parseInt(num);
-    if (!isNaN(num)) {
+    if (!(isNaN(num) || num == 0)) {
         fetch('/data').then(response => response.json()).then((comments) => {
             const commentList = document.getElementById('show-comments');
             for (let i=0; i<num; i++) {
@@ -41,10 +41,10 @@ function getComments() {
 /* Delete comments */
 function deleteComments() {
     const request = new Request('/delete-data', {method: 'POST'});
-    fetch(request).then(fetch('/data').then(response => response.json()).then((comments) => {
+    fetch(request).then(fetch('/data')).then(response => response.json()).then((comments) => {
         const commentList = document.getElementById('show-comments');
         commentList.innerHTML = comments;
-    }));
+    });
 }
 
 /* Creates an <li> element containing text (from subtraction-game). */
