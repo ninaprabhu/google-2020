@@ -108,3 +108,7 @@ h1, h2, h3 {
 .tabs .current {
     background-color: rgb(189, 238, 116);
 }
+
+#show-image, #hidden-image-upload {
+    display: hidden;
+}

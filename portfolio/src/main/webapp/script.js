@@ -29,10 +29,35 @@ function getComments() {
     let num = document.getElementById("num-comments").value;
     num = parseInt(num);
     if (!(isNaN(num) || num == 0)) {
-        fetch('/data').then(response => response.json()).then((comments) => {
+        fetch('/data')
+        .then(response => response.json())
+        .then((response) => {
+            return JSON.parse(response.comments); // Get comments as array.
+        })
+        .then((comments) => {
             const commentList = document.getElementById('show-comments');
             for (let i=0; i<num; i++) {
                 commentList.appendChild(createListElement(comments[i]));
+            }
+        });
+    }
+}
+
+/* Display images */
+function getImages() {
+    document.getElementById('show-comments').innerHTML = "";
+    let num = document.getElementById("num-comments").value;
+    num = parseInt(num);
+    if (!(isNaN(num) || num == 0)) {
+        fetch('/data')
+        .then(response => response.json())
+        .then((response) => {
+            return JSON.parse(response.url); // Get comments as array.
+        })
+        .then((images) => {
+            const imageList = document.getElementById('show-comments');
+            for (let i=0; i<num; i++) {
+                imageList.appendChild(createListImageElement(images[i]));
             }
         });
     }
@@ -47,9 +72,46 @@ function deleteComments() {
     });
 }
 
-/* Creates an <li> element containing text (from subtraction-game). */
+/* Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
 }
+
+/* Creates an <li> element containing text. */
+function createListImageElement(src) {
+  const liElement = document.createElement('li');
+  liElement.innerText = "<img src="+src+"></img>";
+  return liElement;
+}
+
+function fetchBlobstoreUrlAndShowForm() {
+//   const request = new Request('/data', {method: 'POST'});
+  fetch('/blobstore-upload-url') // Generate upload URL.
+      .then(response => response.json())
+        .then((response) => {
+        return JSON.parse(response.url); // Get image upload URL.
+    })
+      .then((imageUploadUrl) => {
+        const imageForm = document.getElementById("image-form");
+        imageForm.action = imageUploadUrl;
+        // imageForm.classList.remove('hidden');
+      });
+    //   .then(fetch(request));
+}
+
+
+// function showImage() {
+//   fetch('/my-form-handler')
+//     .then(response => response.json())
+//     // .then((response) => {
+//     //     return JSON.parse(response.url); // Get image URL.
+//     // })
+//     .then((imageUploadUrl) => {
+//         console.log(imageUploadUrl);
+//         const showImage = document.getElementById("show-image");
+//         showImage.src = imageUploadUrl;
+//         showImage.classList.remove('hidden');
+//     });
+// }
