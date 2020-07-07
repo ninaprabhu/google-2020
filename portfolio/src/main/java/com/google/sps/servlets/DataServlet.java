@@ -45,16 +45,15 @@ import java.net.URL;
 
 
 
-/** Servlet that returns some comments.*/
+/** Servlet that stores and shows images and comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   private String uploadUrl; 
 
   @Override
-  /* Show comments. */
+  /* Show comments and images. */
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    //Get saved comments.
     List<String> comments = new ArrayList<>();
     Query queryComment = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -70,11 +69,10 @@ public class DataServlet extends HttpServlet {
     PreparedQuery resultsImage = datastore.prepare(queryImage);
     
     for (Entity entity : resultsImage.asIterable()) {
-      String img = (String) entity.getProperty("url"); // Comment text.
+      String img = (String) entity.getProperty("url"); // Image URL.
       images.add(img);
     }    
 
-    // String imageUrl = getUploadedFileUrl(request, "image");
     String json = new Gson().toJson(comments);
     String url = new Gson().toJson(images);
     JSONObject obj = new JSONObject();
@@ -84,12 +82,11 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(obj);
   }
 
-  /* Store comments. */
+  /* Store comments and images. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-container");
     String[] array = text.split("\\s*,\\s*"); // Comments formatted as "comment1, comment2."
-    
 
     boolean save = Boolean.parseBoolean(request.getParameter("save"));
     if (save) { // Only store if we indicated.
@@ -106,14 +103,7 @@ public class DataServlet extends HttpServlet {
         img.setProperty("url", imageUrl);
         img.setProperty("timestamp", timestamp);
         datastore.put(img);
-        System.out.print("hello");
-
-    // BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-    // String uploadUrl = blobstoreService.createUploadUrl("/data");
-    }
-
-    
-    // response.getWriter().println(imageUrl);
+    }    
     response.sendRedirect("/comments.html");
   }
 

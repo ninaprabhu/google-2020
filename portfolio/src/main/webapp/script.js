@@ -79,39 +79,21 @@ function createListElement(text) {
   return liElement;
 }
 
-/* Creates an <li> element containing text. */
+/* Creates an <li> element containing an image. */
 function createListImageElement(src) {
   const liElement = document.createElement('li');
-  liElement.innerText = "<img src="+src+"></img>";
+  const imgElement = document.createElement('img');
+  imgElement.src = src;
+  liElement.appendChild(imgElement);
   return liElement;
 }
 
-function fetchBlobstoreUrlAndShowForm() {
-//   const request = new Request('/data', {method: 'POST'});
+/* Generates upload URL for form. */
+function fetchBlobstoreUrl() {
   fetch('/blobstore-upload-url') // Generate upload URL.
-      .then(response => response.json())
-        .then((response) => {
-        return JSON.parse(response.url); // Get image upload URL.
-    })
+      .then(response => response.text())
       .then((imageUploadUrl) => {
         const imageForm = document.getElementById("image-form");
         imageForm.action = imageUploadUrl;
-        // imageForm.classList.remove('hidden');
       });
-    //   .then(fetch(request));
 }
-
-
-// function showImage() {
-//   fetch('/my-form-handler')
-//     .then(response => response.json())
-//     // .then((response) => {
-//     //     return JSON.parse(response.url); // Get image URL.
-//     // })
-//     .then((imageUploadUrl) => {
-//         console.log(imageUploadUrl);
-//         const showImage = document.getElementById("show-image");
-//         showImage.src = imageUploadUrl;
-//         showImage.classList.remove('hidden');
-//     });
-// }
