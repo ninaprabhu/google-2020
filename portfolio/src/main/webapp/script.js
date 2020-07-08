@@ -26,7 +26,7 @@ function changePage(newPage){
 /* Display comments */
 function getComments() {
     document.getElementById('show-comments').innerHTML = "";
-    let num = document.getElementById("num-comments").value;
+    let num = document.getElementById("num-show").value;
     num = parseInt(num);
     if (!(isNaN(num) || num == 0)) {
         fetch('/data')
@@ -45,17 +45,17 @@ function getComments() {
 
 /* Display images */
 function getImages() {
-    document.getElementById('show-comments').innerHTML = "";
-    let num = document.getElementById("num-comments").value;
+    document.getElementById('show-images').innerHTML = "";
+    let num = document.getElementById("num-show").value;
     num = parseInt(num);
     if (!(isNaN(num) || num == 0)) {
         fetch('/data')
         .then(response => response.json())
         .then((response) => {
-            return JSON.parse(response.url); // Get comments as array.
+            return JSON.parse(response.url); // Get images as array.
         })
         .then((images) => {
-            const imageList = document.getElementById('show-comments');
+            const imageList = document.getElementById('show-images');
             for (let i=0; i<num; i++) {
                 imageList.appendChild(createListImageElement(images[i]));
             }
