@@ -26,13 +26,38 @@ function changePage(newPage){
 /* Display comments */
 function getComments() {
     document.getElementById('show-comments').innerHTML = "";
-    let num = document.getElementById("num-comments").value;
+    let num = document.getElementById("num-show").value;
     num = parseInt(num);
     if (!(isNaN(num) || num == 0)) {
-        fetch('/data').then(response => response.json()).then((comments) => {
+        fetch('/data')
+        .then(response => response.json())
+        .then((response) => {
+            return JSON.parse(response.comments); // Get comments as array.
+        })
+        .then((comments) => {
             const commentList = document.getElementById('show-comments');
             for (let i=0; i<num; i++) {
                 commentList.appendChild(createListElement(comments[i]));
+            }
+        });
+    }
+}
+
+/* Display images */
+function getImages() {
+    document.getElementById('show-images').innerHTML = "";
+    let num = document.getElementById("num-show").value;
+    num = parseInt(num);
+    if (!(isNaN(num) || num == 0)) {
+        fetch('/data')
+        .then(response => response.json())
+        .then((response) => {
+            return JSON.parse(response.url); // Get images as array.
+        })
+        .then((images) => {
+            const imageList = document.getElementById('show-images');
+            for (let i=0; i<num; i++) {
+                imageList.appendChild(createListImageElement(images[i]));
             }
         });
     }
@@ -47,9 +72,28 @@ function deleteComments() {
     });
 }
 
-/* Creates an <li> element containing text (from subtraction-game). */
+/* Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
+}
+
+/* Creates an <li> element containing an image. */
+function createListImageElement(src) {
+  const liElement = document.createElement('li');
+  const imgElement = document.createElement('img');
+  imgElement.src = src;
+  liElement.appendChild(imgElement);
+  return liElement;
+}
+
+/* Generates upload URL for form. */
+function fetchBlobstoreUrl() {
+  fetch('/blobstore-upload-url') // Generate upload URL.
+      .then(response => response.text())
+      .then((imageUploadUrl) => {
+        const imageForm = document.getElementById("image-form");
+        imageForm.action = imageUploadUrl;
+      });
 }

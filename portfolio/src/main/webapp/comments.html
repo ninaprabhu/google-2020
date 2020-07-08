@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="fetchBlobstoreUrl()">
     <div class="tabs">
       <button class="tab" onclick="changePage('index.html')">About me!</button>
       <button class="tab" onclick="changePage('projects.html')">Projects</button>
@@ -14,19 +14,25 @@
       <button class="current tab">Comments</button>
     </div>
     <div id="comment-div" class="margin">
-      <form id="comment-form" class="margin" action="/data" method="POST">
+      <form id="image-form" method="POST" enctype="multipart/form-data">
+        <p>Upload an image:</p>
+        <input type="file" name="image">
         <p>Enter your comments (separate by commas):</p>
         <textarea name="text-container">Sample</textarea>
         <br/>
-        <input type="checkbox" name="save" value="true" checked>Save comments
-        <br/>
+        <input type="checkbox" name="save" value="true" checked>Save
+        <br/><br/>
         <input type="submit"/>
       </form>
-      <label for="quantity">How many comments do you want to see?</label>
-      <input id="num-comments" type="number" name="num-comments" value="0">
+
+      <label for="quantity">How many comments/images do you want to see?</label>
+      <input id="num-show" type="number" name="num-show" value="0">
+      <br/>
       <button onclick="getComments()">See comments!</button>
+      <button onclick="getImages()">See images!</button>
       <button onclick="deleteComments()">Delete comments!</button>
       <ul id="show-comments"></ul>
+      <ul id="show-images"></ul>
     </div>
   </body>
 </html>
