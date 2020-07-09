@@ -46,18 +46,25 @@ function getComments() {
 /* Display images */
 function getImages() {
     document.getElementById('show-images').innerHTML = "";
+    document.getElementById('label-images').innerHTML = "";
     let num = document.getElementById("num-show").value;
     num = parseInt(num);
     if (!(isNaN(num) || num == 0)) {
         fetch('/data')
         .then(response => response.json())
         .then((response) => {
-            return JSON.parse(response.url); // Get images as array.
+            return [JSON.parse(response.url), JSON.parse(response.labels)]; // Get images as array.
         })
-        .then((images) => {
+        .then((values) => {
+            let images = values[0];
+            let labels = values[1];
+            console.log(images);
+            console.log(labels);
             const imageList = document.getElementById('show-images');
+            const imageDesc = document.getElementById('label-images');
             for (let i=0; i<num; i++) {
                 imageList.appendChild(createListImageElement(images[i]));
+                imageDesc.appendChild(createListElement(labels[i]));
             }
         });
     }
@@ -84,6 +91,7 @@ function createListImageElement(src) {
   const liElement = document.createElement('li');
   const imgElement = document.createElement('img');
   imgElement.src = src;
+  imgElement.style.width = "300";
   liElement.appendChild(imgElement);
   return liElement;
 }
