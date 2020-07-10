@@ -56,10 +56,8 @@ function getImages() {
             return [JSON.parse(response.url), JSON.parse(response.labels)]; // Get images as array.
         })
         .then((values) => {
-            let images = values[0];
-            let labels = values[1];
-            console.log(images);
-            console.log(labels);
+            const images = values[0];
+            const labels = values[1];
             const imageList = document.getElementById('show-images');
             const imageDesc = document.getElementById('label-images');
             for (let i=0; i<num; i++) {

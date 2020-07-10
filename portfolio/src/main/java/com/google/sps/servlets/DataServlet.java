@@ -53,11 +53,11 @@ import com.google.protobuf.ByteString;
 import java.io.ByteArrayOutputStream;
 
 /** Class to simplify image url/label association. */
-final class imagePair {
+final class ImagePair {
     private final String url;
     private final String label;
 
-    public imagePair(String url, String label) {
+    public ImagePair(String url, String label) {
         this.url = url;
         this.label = label;
     }
@@ -132,7 +132,7 @@ public class DataServlet extends HttpServlet {
             comment.setProperty("timestamp", timestamp);
             datastore.put(comment);
         }
-        imagePair pair = getUploadedFileUrl(request, "image");
+        ImagePair pair = getUploadedFileUrl(request, "image");
         Entity img = new Entity("Image");
         img.setProperty("url", pair.getUrl());
         img.setProperty("label", pair.getLabel());
@@ -143,7 +143,7 @@ public class DataServlet extends HttpServlet {
   }
 
     /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
-  private imagePair getUploadedFileUrl(HttpServletRequest request, String formInputElementName) throws IOException {
+  private ImagePair getUploadedFileUrl(HttpServletRequest request, String formInputElementName) throws IOException {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get("image");
@@ -155,15 +155,16 @@ public class DataServlet extends HttpServlet {
 
     // Our form only contains a single file input, so get the first index.
     BlobKey blobKey = blobKeys.get(0);
-    // Get the BlobKey that points to the image uploaded by the user.
-    // BlobKey blobKey = getBlobKey(request, "image");
 
     // Get the top labels of the image that the user uploaded.
     // TODO: Potentially get all labels
     byte[] blobBytes = getBlobBytes(blobKey);
-    EntityAnnotation label = getImageLabels(blobBytes).get(0); 
-    String imageLabel = label.getDescription();
-
+    try {
+      EntityAnnotation label = getImageLabels(blobBytes).get(0); 
+      String imageLabel = label.getDescription();
+    } catch (Exception e) { //Catch if we run into null.get issue
+      return null;
+    }
 
     // User submitted form without selecting a file, so we can't get a URL. (live server)
     BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
@@ -183,9 +184,9 @@ public class DataServlet extends HttpServlet {
     // path to the image, rather than the path returned by imagesService which contains a host.
     try {
       URL url = new URL(imagesService.getServingUrl(options));
-      return new imagePair(url.getPath(), imageLabel);
+      return new ImagePair(url.getPath(), imageLabel);
     } catch (MalformedURLException e) {
-      return new imagePair(imagesService.getServingUrl(options), imageLabel);
+      return new ImagePair(imagesService.getServingUrl(options), imageLabel);
     }
   }
 
@@ -201,12 +202,12 @@ public class DataServlet extends HttpServlet {
     long currentByteIndex = 0;
     boolean continueReading = true;
     while (continueReading) {
-      // end index is inclusive, so we have to subtract 1 to get fetchSize bytes
+      // End index is inclusive, so we have to subtract 1 to get fetchSize bytes.
       byte[] b =
           blobstoreService.fetchData(blobKey, currentByteIndex, currentByteIndex + fetchSize - 1);
       outputBytes.write(b);
 
-      // if we read fewer bytes than we requested, then we reached the end
+      // If we read fewer bytes than we requested, then we reached the end.
       if (b.length < fetchSize) {
         continueReading = false;
       }
