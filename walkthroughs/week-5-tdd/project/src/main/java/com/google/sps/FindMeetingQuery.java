@@ -24,24 +24,28 @@ public final class FindMeetingQuery {
     allAttendees.addAll(new ArrayList<>(request.getOptionalAttendees())); // Treat all attendees as mandatory.
     MeetingRequest requestOptional = new MeetingRequest(allAttendees, request.getDuration());
     Collection<TimeRange> result = queryHelper(events, requestOptional);
-    if (result.size() > 0 || request.getAttendees().size() == 0) return result; //We found times that worked or there are no mandatory attendees.
+    if (result.size() > 0 || request.getAttendees().size() == 0) {
+        return result; //We found times that worked or there are no mandatory attendees.
+    }
     return queryHelper(events, request); 
   }
 
   /* Returns a collection of TimeRanges that satisfy the people and duration needed in the request. */
-  public Collection<TimeRange> queryHelper(Collection<Event> events, MeetingRequest request) {
+  private Collection<TimeRange> queryHelper(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> goodTimes = new ArrayList<>();
-    if (request.getDuration() > TimeRange.END_OF_DAY) return goodTimes;
+    if (request.getDuration() > TimeRange.END_OF_DAY) {
+        return goodTimes;
+    }
     ArrayList<TimeRange> badTimes = makeBadTimes(events, request);
     makeGoodTimes(request, badTimes, goodTimes);
     return goodTimes;
   }
 
   /* Returns a collection of TimeRanges during which at least one person in the request is busy. */
-  public ArrayList<TimeRange> makeBadTimes(Collection<Event> events, MeetingRequest request){
+  private ArrayList<TimeRange> makeBadTimes(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> badTimes = new ArrayList<>();
-    for (Event event : events){
-      if (!Collections.disjoint(event.getAttendees(), request.getAttendees())){
+    for (Event event : events) {
+      if (!Collections.disjoint(event.getAttendees(), request.getAttendees())) {
         badTimes.add(event.getWhen());
       }
     }
@@ -50,26 +54,30 @@ public final class FindMeetingQuery {
     }
   
   /* Returns a collection of TimeRanges that is the opposite of those specified in badTimes. */
-  public void makeGoodTimes(MeetingRequest request, ArrayList<TimeRange> badTimes, ArrayList<TimeRange> goodTimes){
-    if (badTimes.size() == 0){ // We are free the whole day - no times are off limits.
-      goodTimes.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY+1, false));
+  private void makeGoodTimes(MeetingRequest request, ArrayList<TimeRange> badTimes, ArrayList<TimeRange> goodTimes) {
+    if (badTimes.size() == 0) { // We are free the whole day - no times are off limits.
+      goodTimes.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY + 1, false));
       return;
     }
 
     int duration = badTimes.get(0).start();
-    if (duration > 0) goodTimes.add(TimeRange.fromStartDuration(TimeRange.START_OF_DAY, duration));
+    if (duration > 0) {
+        goodTimes.add(TimeRange.fromStartDuration(TimeRange.START_OF_DAY, duration));
+    }
     
     for (int i = 1; i < badTimes.size(); i++){
-        TimeRange first = badTimes.get(i-1);
+        TimeRange first = badTimes.get(i - 1);
         TimeRange second = badTimes.get(i);
-        if (!first.overlaps(second) && (second.start() - first.end()) >= request.getDuration()){
+        if (!first.overlaps(second) && (second.start() - first.end()) >= request.getDuration()) {
             goodTimes.add(TimeRange.fromStartEnd(first.end(), second.start(), false));
         }
-        if (first.contains(second)){ // Replace second with first to extend end time and avoid later mistakes.
+        if (first.contains(second)) { // Replace second with first to extend end time and avoid later mistakes.
             badTimes.set(i, TimeRange.fromStartDuration(first.start(), first.duration()));
         }
     }
-    int end = badTimes.get(badTimes.size()-1).end();
-    if (TimeRange.END_OF_DAY + 1 > end) goodTimes.add(TimeRange.fromStartEnd(end, TimeRange.END_OF_DAY+1, false));
+    int end = badTimes.get(badTimes.size() - 1).end();
+    if (TimeRange.END_OF_DAY + 1 > end) {
+        goodTimes.add(TimeRange.fromStartEnd(end, TimeRange.END_OF_DAY + 1, false));
+    }
   }
 }

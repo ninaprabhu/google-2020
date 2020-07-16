@@ -273,7 +273,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void everyAttendeeIsConsideredOptionalNoChange() {
+  public void everyAttendeeIsConsideredOptionalImpossibleToAccommodate() {
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_A)),
@@ -296,7 +296,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void everyAttendeeIsConsideredOptionalImpacted() {
+  public void everyAttendeeIsConsideredOptionalPossibleToAccommodate() {
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_A)),
@@ -318,7 +318,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void justEnoughRoomOptional() {
+  public void justEnoughRoomImpossibleToAccommodateOptional() {
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             Arrays.asList(PERSON_A)),
