@@ -184,7 +184,7 @@ public class DataServlet extends HttpServlet {
     // path to the image, rather than the path returned by imagesService which contains a host.
     try {
       URL url = new URL(imagesService.getServingUrl(options));
-      return new ImagePair(url.getPath(), imageLabel);
+      return new ImagePair(url.getPath(), imageLabel); // Getting an "cannot find symbol" error here.
     } catch (MalformedURLException e) {
       return new ImagePair(imagesService.getServingUrl(options), imageLabel);
     }
