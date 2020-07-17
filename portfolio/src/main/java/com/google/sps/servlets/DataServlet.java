@@ -74,7 +74,6 @@ final class ImagePair {
 /** Servlet that stores and shows images and comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   private String uploadUrl; 
 
   @Override
@@ -159,13 +158,16 @@ public class DataServlet extends HttpServlet {
     // Get the top labels of the image that the user uploaded.
     // TODO: Potentially get all labels
     byte[] blobBytes = getBlobBytes(blobKey);
+    EntityAnnotation label;
+    String imageLabel;
     try {
-      EntityAnnotation label = getImageLabels(blobBytes).get(0); 
-      String imageLabel = label.getDescription();
+      label = getImageLabels(blobBytes).get(0); 
+      imageLabel = label.getDescription();
     } catch (Exception e) { //Catch if we run into null.get issue
       return null;
     }
 
+    
     // User submitted form without selecting a file, so we can't get a URL. (live server)
     BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
     if (blobInfo.getSize() == 0) {
@@ -184,7 +186,7 @@ public class DataServlet extends HttpServlet {
     // path to the image, rather than the path returned by imagesService which contains a host.
     try {
       URL url = new URL(imagesService.getServingUrl(options));
-      return new ImagePair(url.getPath(), imageLabel); // Getting an "cannot find symbol" error here.
+      return new ImagePair(url.getPath(), imageLabel);
     } catch (MalformedURLException e) {
       return new ImagePair(imagesService.getServingUrl(options), imageLabel);
     }
@@ -246,5 +248,3 @@ public class DataServlet extends HttpServlet {
     return imageResponse.getLabelAnnotationsList();
   }
 }
-
-
