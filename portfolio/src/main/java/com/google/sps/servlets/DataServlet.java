@@ -52,25 +52,6 @@ import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.protobuf.ByteString;
 import java.io.ByteArrayOutputStream;
 
-/** Class to simplify image url/label association. */
-final class ImagePair {
-    private final String url;
-    private final String label;
-
-    public ImagePair(String url, String label) {
-        this.url = url;
-        this.label = label;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-}
-
 /** Servlet that stores and shows images and comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
