@@ -28,7 +28,7 @@ function getComments() {
     document.getElementById('show-comments').innerHTML = "";
     let num = document.getElementById("num-show").value;
     num = parseInt(num);
-    if (!(isNaN(num) || num == 0)) {
+    if (!(isNaN(num) || num==0)) {
         fetch('/data')
         .then(response => response.json())
         .then((response) => {
