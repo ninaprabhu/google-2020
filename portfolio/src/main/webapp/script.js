@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Show picture of dog */
+/* Show picture of dog. */
 function showPic(){
     document.getElementById("show").classList.add("hidden");
     document.getElementById("pic").classList.remove("hidden");
 }
 
-/* Switch to new page */
+/* Switch to new page. */
 function changePage(newPage){
     location.href = newPage;
 }
 
-/* Display comments */
+/* Display comments. */
 function getComments() {
     document.getElementById('show-comments').innerHTML = "";
     let num = document.getElementById("num-show").value;
