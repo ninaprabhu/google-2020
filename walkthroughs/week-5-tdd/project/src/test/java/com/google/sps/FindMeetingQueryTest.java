@@ -273,7 +273,14 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void everyAttendeeIsConsideredOptionalImpossibleToAccommodate() {
+  public void everyAttendeeIsConsideredImpossibleToAccommodateOneAttendeeOptional() {
+    // Have each person have different events. We will not be able to accommodate
+    // C because they are busy the whole day
+    //
+    // Events  : |--C----|--A--|-----|--B--|---|
+    // Day     : |-----------------------------|
+    // Options : |--1--|        |--2--|    |-3-|
+
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_A)),
@@ -296,7 +303,13 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void everyAttendeeIsConsideredOptionalPossibleToAccommodate() {
+  public void everyAttendeeIsConsideredPossibleToAccommodateOneAttendeeOptional() {
+    // Have each person have different events. We will  be able to accommodate C, the optional attendee.
+    //
+    // Events  :     |--A--||--B--||--C--|
+    // Day     : |-----------------------------|
+    // Options : |-1-|                   |--2--|
+
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_A)),
@@ -318,7 +331,14 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void justEnoughRoomImpossibleToAccommodateOptional() {
+  public void justEnoughRoomImpossibleToAccommodateOneAttendeeOptional() {
+    // Have two attendees with meeting times that 
+    // make scheduling possible. We will not be able to 
+    // accommodate the optional attendee.
+    //
+    // Events  : |-----A--||B--|   |--A--------|
+    // Day     : |-----------------------------|
+    // Options :           |-----1-|     
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             Arrays.asList(PERSON_A)),
@@ -338,9 +358,9 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void everyAttendeeIsConsideredAllOptional() {
-    // Have each person have different events. We should see two options because each person has
-    // split the restricted times.
+  public void everyAttendeeIsConsideredAllAttendeesOptional() {
+    // Have two optional attendees with meeting times that 
+    // make scheduling possible. We should see three options.
     //
     // Events  :       |--A--|     |--B--|
     // Day     : |-----------------------------|
@@ -367,7 +387,14 @@ public final class FindMeetingQueryTest {
   }
 
  @Test
-  public void noTimeAvailableOptional() {
+  public void noTimeAvailableAllAttendeesOptional() {
+    // Have two optional people, but make it so that there is not enough room at any point in the day to
+    // have the meeting.
+    //
+    // Events  : |--A-----||------B----|
+    // Day     : |---------------------|
+    // Options :
+
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, true),
             Arrays.asList(PERSON_A)),

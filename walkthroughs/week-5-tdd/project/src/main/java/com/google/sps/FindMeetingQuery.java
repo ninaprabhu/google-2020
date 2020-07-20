@@ -32,12 +32,11 @@ public final class FindMeetingQuery {
 
   /* Returns a collection of TimeRanges that satisfy the people and duration needed in the request. */
   private Collection<TimeRange> queryHelper(Collection<Event> events, MeetingRequest request) {
-    ArrayList<TimeRange> goodTimes = new ArrayList<>();
     if (request.getDuration() > TimeRange.END_OF_DAY) {
-        return goodTimes;
+        return new ArrayList<>(); // If the request is too long, return an empty list because this is impossible to accommodate.
     }
     ArrayList<TimeRange> badTimes = makeBadTimes(events, request);
-    makeGoodTimes(request, badTimes, goodTimes);
+    ArrayList<TimeRange> goodTimes = makeGoodTimes(request, badTimes);
     return goodTimes;
   }
 
@@ -51,33 +50,44 @@ public final class FindMeetingQuery {
     }
     Collections.sort(badTimes, TimeRange.ORDER_BY_START);
     return badTimes;
-    }
+  }
   
   /* Returns a collection of TimeRanges that is the opposite of those specified in badTimes. */
-  private void makeGoodTimes(MeetingRequest request, ArrayList<TimeRange> badTimes, ArrayList<TimeRange> goodTimes) {
+  private ArrayList<TimeRange> makeGoodTimes(MeetingRequest request, ArrayList<TimeRange> badTimes) {
+    ArrayList<TimeRange> badTimesCopy = badTimes;
+    ArrayList<TimeRange> goodTimes = new ArrayList<>();
     if (badTimes.size() == 0) { // We are free the whole day - no times are off limits.
       goodTimes.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY + 1, false));
-      return;
+      return goodTimes;
     }
 
-    int duration = badTimes.get(0).start();
-    if (duration > 0) {
-        goodTimes.add(TimeRange.fromStartDuration(TimeRange.START_OF_DAY, duration));
+    int firstDuration = badTimes.get(0).start();
+    if (firstDuration > 0) {
+        goodTimes.add(TimeRange.fromStartDuration(TimeRange.START_OF_DAY, firstDuration));
     }
     
-    for (int i = 1; i < badTimes.size(); i++){
-        TimeRange first = badTimes.get(i - 1);
-        TimeRange second = badTimes.get(i);
-        if (!first.overlaps(second) && (second.start() - first.end()) >= request.getDuration()) {
-            goodTimes.add(TimeRange.fromStartEnd(first.end(), second.start(), false));
-        }
+    // Two for-loops to avoid modifying array while looping over it.
+    for (int i = 1; i < badTimesCopy.size(); i++){
+        TimeRange first = badTimesCopy.get(i - 1);
+        TimeRange second = badTimesCopy.get(i);
         if (first.contains(second)) { // Replace second with first to extend end time and avoid later mistakes.
             badTimes.set(i, TimeRange.fromStartDuration(first.start(), first.duration()));
         }
     }
+
+    for (int i = 1; i < badTimes.size(); i++){
+        TimeRange first = badTimes.get(i - 1);
+        TimeRange second = badTimes.get(i);
+        if (!first.overlaps(second) && // There is space between the two events.
+            (second.start() - first.end()) >= request.getDuration()) { // The space between the two events is long enough.
+            goodTimes.add(TimeRange.fromStartEnd(first.end(), second.start(), false));
+        }
+    }
+
     int end = badTimes.get(badTimes.size() - 1).end();
     if (TimeRange.END_OF_DAY + 1 > end) {
         goodTimes.add(TimeRange.fromStartEnd(end, TimeRange.END_OF_DAY + 1, false));
     }
+    return goodTimes;
   }
 }
