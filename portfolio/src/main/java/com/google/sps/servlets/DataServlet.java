@@ -52,29 +52,9 @@ import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.protobuf.ByteString;
 import java.io.ByteArrayOutputStream;
 
-/** Class to simplify image url/label association. */
-final class ImagePair {
-    private final String url;
-    private final String label;
-
-    public ImagePair(String url, String label) {
-        this.url = url;
-        this.label = label;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-}
-
 /** Servlet that stores and shows images and comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   private String uploadUrl; 
 
   @Override
@@ -159,13 +139,16 @@ public class DataServlet extends HttpServlet {
     // Get the top labels of the image that the user uploaded.
     // TODO: Potentially get all labels
     byte[] blobBytes = getBlobBytes(blobKey);
+    EntityAnnotation label;
+    String imageLabel;
     try {
-      EntityAnnotation label = getImageLabels(blobBytes).get(0); 
-      String imageLabel = label.getDescription();
+      label = getImageLabels(blobBytes).get(0); 
+      imageLabel = label.getDescription();
     } catch (Exception e) { //Catch if we run into null.get issue
       return null;
     }
 
+    
     // User submitted form without selecting a file, so we can't get a URL. (live server)
     BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
     if (blobInfo.getSize() == 0) {
@@ -246,5 +229,3 @@ public class DataServlet extends HttpServlet {
     return imageResponse.getLabelAnnotationsList();
   }
 }
-
-
